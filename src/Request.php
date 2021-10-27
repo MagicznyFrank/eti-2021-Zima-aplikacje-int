@@ -15,6 +15,11 @@ class Request
     private $queryParameters;
 
     /**
+     * @var array
+     */
+    private $pathParamaters = [];
+
+    /**
      * @param string $path
      * @param array $queryParameters
      */
@@ -27,16 +32,17 @@ class Request
     /**
      * @return Request
      */
-    public static function initialize(){
+    public static function initialize()
+    {
         $uri = $_SERVER['REQUEST_URI'];
         $index = strpos($uri, '?');
-        if($index === false){
-            $path = $uri;
 
-        }else {
+        if ($index === false) {
+            $path = $uri;
+        } else {
             $path = substr($uri, 0, $index);
         }
-        var_dump($path);
+
         return new self($path, $_GET);
     }
 
@@ -90,7 +96,28 @@ class Request
     {
         $this->queryParameters = $queryParameters;
     }
-    public function addParam($parameter){
-        $this->queryParameters[] = $parameter;
+
+    /**
+     * @param $parameters
+     */
+    public function setPathParameters($parameters)
+    {
+        $this->pathParamaters = $parameters;
+    }
+
+    /**
+     * @return array
+     */
+    public function getParameter($name, $default = null)
+    {
+        return $this->pathParamaters[$name] ?? $default;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPathParameters()
+    {
+        return $this->pathParamaters;
     }
 }

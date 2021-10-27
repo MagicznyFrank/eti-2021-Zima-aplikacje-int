@@ -13,15 +13,21 @@ class App
     private $page;
 
     /**
+     * @var
+     */
+    private $request;
+
+    /**
      * Uruchamia aplikację.
      */
     public function run(): void
     {
         //$this->processRouting();
-        $request = Request::initialize();
+        $this->request = Request::initialize();
         $router = new Router($this->getRoutes());
-        $page = $router->match($request);
-        $Layout = new Layout($page);
+        $page = $router->match($this->request);
+
+        $Layout = new Layout($this->request, $page);
         $Layout->render();
     }
 
@@ -36,10 +42,20 @@ class App
     private function getRoutes()
     {
         return [
-            '/' => 'home',
-            '/article' => 'article',
-            '/article/(\d+)' => 'article',
-            '/body' => 'body'
+            'name' =>[
+                'path'=>'/',
+                'page' => 'home'
+
+            ],
+            'article' => [
+                'path'=>'/article/{id}',
+                'page' => 'article'
+            ],
+
+            '/body' => [
+                'path'=> '/body',
+                'page'=>'body'
+            ]
 
         ];
     }
