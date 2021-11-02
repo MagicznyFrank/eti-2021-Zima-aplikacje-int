@@ -26,9 +26,10 @@ class App
         $this->request = Request::initialize();
         $router = new Router($this->getRoutes());
         $page = $router->match($this->request);
-
         $Layout = new Layout($this->request, $page);
         $Layout->render();
+        echo $router->generateUrl('article',['id' => 5]);
+        echo $router->generateUrl('Homepage');
     }
 
     /**
