@@ -1,15 +1,17 @@
-<?php ?>
 <html>
     <head>
-<title>
-    <?php echo $title; ?>
-</title>
+        <title>
+            <?php echo $title; ?>
+        </title>
     </head>
+
     <body>
-         <h1>HI</h1>
-         <a href="/">Home</a>
-         <a href="/body">body</a>
-         <a href="/article">article</a>
-    <?php echo $content; ?>
+        <h3>HEJ</h3>
+        <a href="/">Home Page</a>
+        <br>
+        <a href="/body">Body Page</a>
+        <br>
+        <a href="/article">Article Page</a>
+        <?php echo $content; ?>
     </body>
 </html>

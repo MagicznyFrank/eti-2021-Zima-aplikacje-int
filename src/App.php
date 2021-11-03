@@ -1,6 +1,7 @@
 <?php
-
 namespace App;
+
+use App\Controllers\ControllerInterface;
 
 /**
  * Application entry point.
@@ -13,52 +14,37 @@ class App
     private $page;
 
     /**
-     * @var
+     * @var Request
      */
     private $request;
 
     /**
      * Uruchamia aplikację.
      */
+
     public function run(): void
     {
-        //$this->processRouting();
+            //$this->processRouting();
         $this->request = Request::initialize();
-        $router = new Router($this->getRoutes());
-        $page = $router->match($this->request);
-        $Layout = new Layout($this->request, $page);
-        $Layout->render();
-        echo $router->generateUrl('article',['id' => 5]);
-        echo $router->generateUrl('Homepage');
-    }
+        $serviceContainer = ServiceContainer::getInstance();
+        $router = $serviceContainer->get('router');
 
-    /**
-     * @return string
-     */
-    public function getPage(): string
-    {
-        return $this->page;
-    }
+        /** @var  Router $router */
+        $matchedRoute = $router->match($this->request);
+        if($matchedRoute instanceof ControllerInterface){
+            $response = $matchedRoute($this->request);
+            foreach($response->getHeaders() as $header){
+                header($header);
+            }
 
-    private function getRoutes()
-    {
-        return [
-            'name' =>[
-                'path'=>'/',
-                'page' => 'home'
+            echo $response->getBody();
 
-            ],
-            'article' => [
-                'path'=>'/article/{id}',
-                'page' => 'article'
-            ],
+        } else {
+            $layout = new Layout($this->request, $matchedRoute);
+            $layout->render();
+        }
 
-            '/body' => [
-                'path'=> '/body',
-                'page'=>'body'
-            ]
-
-        ];
+        echo $router->generateUrl('homepage');
     }
 
 }
