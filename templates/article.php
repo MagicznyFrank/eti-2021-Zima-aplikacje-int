@@ -1,4 +1,5 @@
+<h2>welcome to article page</h2>
 
-<p>ARTICLE PAGE</p>
 <?php
-var_dump($request->getPathParameters()) ;
+
+var_dump ($router->generate('article',['id'=>30]));

@@ -2,9 +2,9 @@
 
 namespace App;
 
-use App\Controllers;
-
-
+/**
+ * Klasa przetwarzająca layouty aplikacji. Odpowiada zarenderowanie stron/szablonów.
+ */
 class Layout
 {
     /**
@@ -23,48 +23,54 @@ class Layout
     private $title;
 
     /**
-     * @var
+     * @var array
      */
-    private $request;
+    private $params;
 
     /**
-     * @param $page
+     * @param string $page
      * @param string $name
      * @param string $title
-     * @param Request $request;
+     * @param array $params
      */
 
-    public function __construct(Request $request, string $page, string $name = 'default', string $title = 'APSL Website!')
-    {
+    public function __construct(
+        string $page,
+        string $name,
+        string $title = 'APSL Website!',
+        array $params
+    ) {
         $this->page = $page;
         $this->name = $name;
         $this->title = $title;
-        $this->request = $request;
+        $this->params = $params;
     }
 
-    public function render()
+    /**
+     * Process and render layout
+     * @return string
+     */
+    public function render(): string
     {
-        extract([
+        extract(array_merge($this->params, [
             'title' => $this->title,
-            'content' => $this->renderPage()
-        ]);
+            'content' => $this->renderTemplate()
+        ]));
+
+        ob_start();
         include __DIR__ . "/../layouts/{$this->name}.php";
+        return ob_get_clean();
     }
 
     /**
      * Proces template/page
      */
-    private function renderPage(): string
+    private function renderTemplate(): string
     {
         ob_start();
-        extract([
-            'request' => $this->request,
-            'router' => ServiceContainer::getInstance()->get('router')
-        ]);
-        include "../pages/{$this->page}.php";
+        extract($this->params);
+        include "../templates/{$this->page}.php";
 
         return ob_get_clean();
     }
-
-
 }

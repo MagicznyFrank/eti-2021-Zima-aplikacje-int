@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Controllers\SimpleController;
+use App\Controllers\PageController;
 
 class ServiceContainer
 {
@@ -10,39 +10,47 @@ class ServiceContainer
 
     private $services;
 
-    public function __construct()
+    private function __construct()
     {
-        $this->services['router'] = new Router(
-            [
-                'homepage' => [
-                    'path' => '/',
-                    'page' => 'home'
-                ],
+        $this->services['router'] = function () {
+            $router = new Router();
 
-                'article' => [
-                    'path' => '/article/{id}',
-                    'page' => 'article'
-                ],
+            $router->addRoute('home', [
+                'path' => '/',
+                'controller' => function () use ($router) {
+                    return new PageController($router, 'home', 'default');
+                }
+            ]);
+            $router->addRoute('article', [
+                'path' => '/article',
+                'controller' => function () use ($router) {
+                    return new PageController($router, 'article', 'default');
+                }
+            ]);
+            $router->addRoute('body', [
+                'path' => '/body',
+                'controller' => function () use ($router) {
+                    return new PageController($router, 'body', 'default');
+                }
+            ]);
 
-                'body' => [
-                    'path' => '/body/{id}',
-                    'page' => 'body'
-                ],
+            $router->addRoute('invalid', [
+                'path' => '/invalid'
+            ]);
 
-                'responseTest' => [
-                    'path' => '/jsonTest',
-                    'controller' => new SimpleController()
-                ]
-            ]
-        );
+            return $router;
+        };
+        $this->services['session'] = function (){
+            return new Session();
+        };
     }
 
     /**
      * @return ServiceContainer
      */
-    public static function getInstance()
+    public static function getInstance(): ServiceContainer
     {
-        if(!isset(self::$instance)) {
+        if (!isset(self::$instance)) {
             self::$instance = new self();
         }
 
@@ -60,7 +68,7 @@ class ServiceContainer
             throw new \Exception(sprintf('Selected service %s was not found...', $id));
         }
 
-        return $this->services[$id];
+        return $this->services[$id]($this);
     }
 
     /**

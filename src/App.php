@@ -1,7 +1,11 @@
 <?php
+
 namespace App;
 
 use App\Controllers\ControllerInterface;
+use App\Exception\PageNotFoundException;
+use App\Response\ErrorResponse;
+use Exception;
 
 /**
  * Application entry point.
@@ -12,39 +16,42 @@ class App
      * @var string
      */
     private $page;
-
     /**
      * @var Request
      */
     private $request;
-
     /**
-     * Uruchamia aplikację.
+     * Uruchamia apke.
      */
+
 
     public function run(): void
     {
-            //$this->processRouting();
+        //$this->processRouting();
         $this->request = Request::initialize();
         $serviceContainer = ServiceContainer::getInstance();
         $router = $serviceContainer->get('router');
 
-        /** @var  Router $router */
-        $matchedRoute = $router->match($this->request);
-        if($matchedRoute instanceof ControllerInterface){
+        try {
+            /** @var Router $router */
+            $matchedRoute = $router->match($this->request);
             $response = $matchedRoute($this->request);
-            foreach($response->getHeaders() as $header){
-                header($header);
-            }
-
-            echo $response->getBody();
-
-        } else {
-            $layout = new Layout($this->request, $matchedRoute);
-            $layout->render();
+        } catch (PageNotFoundException $exception) {
+            $response = new ErrorResponse($router, $exception, 404);
+        } catch (Exception $exception) {
+            $response = new ErrorResponse($router, $exception, 500);
         }
 
-        echo $router->generateUrl('homepage');
+        foreach ($response->getHeaders() as $header) {
+            header($header);
+        }
+
+        echo $response->getBody();
+
     }
 
-}
+
+    }
+
+
+

@@ -1,5 +1,1 @@
-<?php
-  $page = $_GET['page'] ?? 'body';
-
-
-?>
+<h2>welcome to body page</h2>

@@ -2,8 +2,9 @@
 
 namespace App\Controllers;
 
-use App\Response;
 use App\Request;
+use App\Response\JsonResponse;
+use App\Response\Response;
 
 class SimpleController implements ControllerInterface
 {
@@ -13,12 +14,13 @@ class SimpleController implements ControllerInterface
      */
     public function __invoke(Request $request): Response
     {
-        $body = [
-            'Some test value',
-            'param1' => 'value 1'
-        ];
-
-        $additionalHeaders = ['Content-Type: application/json'];
-        return new Response(json_encode($body), $additionalHeaders);
+        $session = ServiceContainer::getInstance()->get('session');
+        $session->start();
+        $session->set('user', "Arek");
+        return new LayoutResponse($this->name, [
+            'request' => $request,
+            'router' => $this->router,
+            'session' => $session
+        ], $this->layout);
     }
 }

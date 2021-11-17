@@ -5,24 +5,24 @@ namespace App;
 class Request
 {
     /**
-    * @var string
-    */
+     * @var string
+     */
     private $path;
 
     /**
-    * @var array
-    */
+     * @var array
+     */
     private $queryParameters;
 
     /**
      * @var array
      */
-    private $pathParameters = [];
+    private $pathParamaters = [];
 
     /**
-    * @param string $path
-    * @param array $queryParameters
-    */
+     * @param string $path
+     * @param array $queryParameters
+     */
     private function __construct(string $path, array $queryParameters)
     {
         $this->path = $path;
@@ -36,7 +36,8 @@ class Request
     {
         $uri = $_SERVER['REQUEST_URI'];
         $index = strpos($uri, '?');
-        if($index === false) {
+
+        if ($index === false) {
             $path = $uri;
         } else {
             $path = substr($uri, 0, $index);
@@ -46,76 +47,76 @@ class Request
     }
 
     /**
-    * @return array
-    */
+     * @return array
+     */
     public function getQueryParameters(): array
     {
         return $this->queryParameters;
     }
 
     /**
-    * @param string $name
-    * @return bool
-    */
+     * @param string $name
+     * @return bool
+     */
     public function hasQueryParam(string $name)
     {
         return isset($this->queryParameters[$name]);
     }
 
     /**
-    * @param string $name
-    * @param null $default
-    * @return string
-    */
+     * @param string $name
+     * @param null $default
+     * @return string
+     */
     public function getQueryParam(string $name, $default = null): string
     {
         return $this->queryParameters[$name] ?? $default;
     }
 
     /**
-    * @return string
-    */
+     * @return string
+     */
     public function getPath(): string
     {
         return $this->path;
     }
 
     /**
-    * @param string $path
-    */
+     * @param string $path
+     */
     public function setPath(string $path): void
     {
         $this->path = $path;
     }
 
     /**
-    * @param array $queryParameters
-    */
+     * @param array $queryParameters
+     */
     public function setQueryParameters(array $queryParameters): void
     {
         $this->queryParameters = $queryParameters;
     }
 
-
-    public function pushPathParameter($parameter)
-    {
-        $this->pathParameters[] = $parameter;
-    }
-
-    public function getParameter($name, $default = null)
-    {
-        return $this->pathParameters[$name] ?? $default;
-    }
-
+    /**
+     * @param $parameters
+     */
     public function setPathParameters($parameters)
     {
-        $this->pathParameters = $parameters;
+        $this->pathParamaters = $parameters;
     }
 
     /**
      * @return array
      */
-    public function getPathParameters(): array
+    public function getParameter($name, $default = null)
+    {
+        return $this->pathParamaters[$name] ?? $default;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPathParameters()
     {
         return $this->pathParameters;
     }
