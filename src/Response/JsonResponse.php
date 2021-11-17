@@ -10,6 +10,5 @@ class JsonResponse extends Response{
             json_encode($body),
             array_merge($additionalHeaders, $headers),
             $status);
-
     }
 }

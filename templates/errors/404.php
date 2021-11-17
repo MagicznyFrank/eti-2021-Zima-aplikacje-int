@@ -1,3 +1,1 @@
-<h2>error</h2>
-
-<?php
+<p>Strona nie została odnaleziona.</p>

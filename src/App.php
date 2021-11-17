@@ -3,9 +3,9 @@
 namespace App;
 
 use App\Controllers\ControllerInterface;
-use App\Exception\PageNotFoundException;
 use App\Response\ErrorResponse;
-use Exception;
+use App\Controllers\PageController;
+use App\Session;
 
 /**
  * Application entry point.
@@ -24,7 +24,6 @@ class App
      * Uruchamia apke.
      */
 
-
     public function run(): void
     {
         //$this->processRouting();
@@ -42,16 +41,14 @@ class App
             $response = new ErrorResponse($router, $exception, 500);
         }
 
+
         foreach ($response->getHeaders() as $header) {
             header($header);
         }
 
         echo $response->getBody();
-
     }
-
-
-    }
+}
 
 
 

@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Controllers\PageController;
+use App\Session\Session;
 
 class ServiceContainer
 {
@@ -40,7 +41,8 @@ class ServiceContainer
 
             return $router;
         };
-        $this->services['session'] = function (){
+
+        $this->services['session'] = function(){
             return new Session();
         };
     }

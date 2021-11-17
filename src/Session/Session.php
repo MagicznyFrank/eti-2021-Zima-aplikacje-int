@@ -7,7 +7,7 @@ class Session
     /**
      * @var bool
      */
-    private bool $sessionStarted = false;
+    private $sessionStarted = false;
 
     private array $flashMessages;
 
@@ -24,7 +24,7 @@ class Session
 
     public function close()
     {
-        if (!$this->sessionStarted) {
+        if(!$this->sessionStarted) {
             $this->start();
         }
         session_write_close();
@@ -43,7 +43,7 @@ class Session
         if (!$this->sessionStarted) {
             $this->start();
         }
-        return isset($_SESSION[$name]);
+        return isset($_SERVER[$name]);
     }
 
     public function get(string $name, $default = null)
@@ -71,14 +71,13 @@ class Session
 
     public function regenerate()
     {
-        //TODO: check and fix.
 //        if (!$this->sessionStarted) {
 //            $this->start();
 //        }
 //        $currentVars = [];
 //        $globals = json_decode($_SESSION['globals'] ?? '[]', true);
 //
-//        foreach (array_keys($globals) as $key) {
+//        foreach(array_keys($globals) as $key) {
 //            $currentVars[$key] = $this->get($key);
 //        }
 //
@@ -86,7 +85,7 @@ class Session
 //        session_id(session_create_id());
 //        $this->start();
 //
-//        foreach ($currentVars as $key => $value) {
+//        foreach($currentVars as $key => $value) {
 //            $this->set($key, $value, true);
 //        }
 //        $_SESSION['globals'] = $globals;

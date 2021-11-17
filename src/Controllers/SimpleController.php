@@ -14,13 +14,7 @@ class SimpleController implements ControllerInterface
      */
     public function __invoke(Request $request): Response
     {
-        $session = ServiceContainer::getInstance()->get('session');
-        $session->start();
-        $session->set('user', "Arek");
-        return new LayoutResponse($this->name, [
-            'request' => $request,
-            'router' => $this->router,
-            'session' => $session
-        ], $this->layout);
+        $body = ['Some test value','param1' => 'value 1'];
+        return new JsonResponse($body);
     }
 }
