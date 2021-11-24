@@ -38,17 +38,14 @@ class PageController implements ControllerInterface
 
     /**
      * @param Request $request
-     * @return LayoutResponse
+     * @return Response
      */
-    public function __invoke(Request $request): LayoutResponse
+    public function __invoke(Request $request): Response
     {
-        $session = ServiceContainer::getInstance()->get('session');
-        $session->start();
-        $session->set('user', 'Krzysiek');
         return new LayoutResponse($this->name, [
             'request' => $request,
             'router' => $this->router,
-            'session' => $session
+            'session' => ServiceContainer::getInstance()->get('session')
         ], $this->layout);
     }
 }

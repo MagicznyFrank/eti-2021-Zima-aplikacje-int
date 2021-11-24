@@ -44,6 +44,7 @@ class Router
             $routeSegments = explode('/', $trimmedRoute);
 
             $params = $this->checkRoute($routeSegments, $requestPathSegments);
+
             if ($params !== false) {
                 $request->setPathParameters($params);
                 $controllerFactory = $routeConfig['controller'] ?? null;
