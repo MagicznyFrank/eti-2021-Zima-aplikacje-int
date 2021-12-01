@@ -8,8 +8,10 @@
         <form name="loginForm" method="post" action="<?php echo $router->generate('do_login') ?>">
             <input type="text" name="login" value="" placeholder="Enter your username here">
             <input type="password" name="password" value="" placeholder="Enter your pass here">
-
             <button type="submit">Zaloguj</button>
+        </form>
+        <form>
+            <input type="text" name="login" value="" placeholder="Enter your username here">
         </form>
     <?php endif; ?>
 
