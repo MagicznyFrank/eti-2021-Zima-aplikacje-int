@@ -11,7 +11,6 @@ use App\Router;
 use App\Security\Sha1PasswordEncoder;
 use App\ServiceContainer;
 use App\Session\Session;
-use App\Repository\JsonRepository;
 
 class DoLoginController implements ControllerInterface
 {
@@ -25,9 +24,9 @@ class DoLoginController implements ControllerInterface
      */
     private Router $router;
     /**
-     * @var JsonRepository
+     * @var UserRepositoryInterface
      */
-    private JsonRepository $repository;
+    private UserRepositoryInterface $repository;
     /**
      * @var Sha1PasswordEncoder
      */
@@ -40,7 +39,7 @@ class DoLoginController implements ControllerInterface
     public function __construct(
         Session $session,
         Router $router,
-        JsonRepository $repository,
+        UserRepositoryInterface $repository,
         Sha1PasswordEncoder $passwordEncoder
     ) {
         $this->session = $session;

@@ -10,11 +10,8 @@ namespace App\Repository;
 
     use App\Model\UserCredentials;
 
-    $run = new JsonRepository();
-    $run -> findUserCredentialsByusername('Michaś');
 
-
-class JsonRepository
+class JsonRepository implements UserRepositoryInterface
 {
     /**
      * @var array
@@ -27,17 +24,16 @@ class JsonRepository
      * @param string $path
      */
 
-    public function __construct(string $path = 'data.json')
+    public function __construct(string $path = '/var/www/eti-wprowadzenie/src/Repository/data.json')
     {
         $this -> path = $path;
-
     }
 
     /**
      * * @return UserCredentials
      */
 
-    public function findUserCredentialsByusername(string $username)//: ?UserCredentials
+    public function findCredentialsByUsername(string $username): ?UserCredentials
     {
 
         $file = $this->path;
@@ -45,10 +41,10 @@ class JsonRepository
         $obj = json_decode($data);
         for($i=0;$i<count($obj);$i++){
              if($obj[$i]->Login == $username){
-                echo $obj[$i]->Login.PHP_EOL;
-                echo $obj[$i]->Password.PHP_EOL;
-                echo ''.PHP_EOL;
-                //return new UserCredentials($username, $this->users[$username]);
+                //echo $obj[$i]->Login.PHP_EOL;
+                // echo $obj[$i]->Password.PHP_EOL;
+                //echo ''.PHP_EOL;
+                return new UserCredentials($username, $obj[$i]->Password);
             }
 
 

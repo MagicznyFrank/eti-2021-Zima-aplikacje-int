@@ -9,6 +9,7 @@ use App\Controllers\SimpleController;
 use App\Repository\InMemoryUserRepository;
 use App\Security\Sha1PasswordEncoder;
 use App\Session\Session;
+use App\Repository\JsonRepository;
 
 class ServiceContainer
 {
@@ -46,7 +47,7 @@ class ServiceContainer
                     return new DoLoginController(
                         $this->get('session'),
                         $router,
-                        $this->get('user_repository'),
+                        $this->get('json_user_repository'),
                         $this->get('password_encoder')
                     );
                 }
@@ -81,6 +82,9 @@ class ServiceContainer
 
         $this->services['password_encoder'] = function () {
             return new Sha1PasswordEncoder();
+        };
+        $this->services['json_user_repository'] = function () {
+            return new JsonRepository();
         };
     }
 
