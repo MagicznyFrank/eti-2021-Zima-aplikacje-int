@@ -41,7 +41,7 @@ class DoLoginController implements ControllerInterface
         $response = new RedirectResponse(
             $this->router->generate('home')
         );
-        $username = "Frank";
+        $username = "Frankk";
         $password = "pass123";
         $isPost = $request->isPost();
         if (!$isPost) {
